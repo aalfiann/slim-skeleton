@@ -1,15 +1,16 @@
 {
     "name":"aalfiann/slim-skeleton",
-    "type":"framework",
     "description":"This is a very simple, fast and secure of slim-skeleton.",
     "keywords":["microframework", "rest", "router", "PSR7", "PSR11"],
-    "homepage":"https://github.com/aalfiann/slim-skeleton",
-    "license":"https://github.com/aalfiann/slim-skeleton/blob/master/LICENSE.md MIT",
     "authors":[
         {
-            "name":"M ABD AZIZ ALFIAN (aalfiann@gmail.com)"
+            "name": "M ABD AZIZ ALFIAN",
+            "email": "aalfiann@gmail.com",
+            "homepage": "https://github.com/aalfiann",
+            "role": "Developer"
         }
     ],
+    "type":"framework",
     "require": {
         "php": ">=5.5",
         "slim/slim": "^3.1",
@@ -17,5 +18,8 @@
         "slim/twig-view": "^2.1",
         "slim/http-cache": "^0.4.0",
         "monolog/monolog": "^1.22"
-    }
+    },
+    "license":"MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
