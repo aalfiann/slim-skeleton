@@ -1,0 +1,11 @@
+{% extends "layout.twig" %}
+{% block title %}{{ engine.name }} - {{ author.name }}{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+    <center><h1>{{ engine.name }}</h1></center>
+    <p><strong>{{ welcome }}</strong></p>
+    <hr>
+    <p>{{message}}</p>
+{% endblock %}

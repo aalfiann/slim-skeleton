@@ -1,0 +1,12 @@
+{% extends "layout.twig" %}
+{% block title %}{{ code }} - {{ message }}{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+    <center><h1>{{ code }}</h1></center>
+    <p><strong>{{ message }}</strong></p>
+    <hr>
+    <p>Please check the data log for more detail.</p>
+    <p><a href="{{ path_for('/') }}">Back to home</a></p>
+{% endblock %}

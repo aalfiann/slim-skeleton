@@ -1,0 +1,21 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule . index.php [L]
+	SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+</IfModule>
+
+<IfModule mod_headers.c>
+	# Unset Server Signature header
+	ServerSignature Off
+
+	# Unset Server Technology header
+	Header unset X-Powered-By
+
+	# Set XSS Protection header
+	Header set X-XSS-Protection "1; mode=block"
+
+	# Set content-sniffing protection
+	Header set X-Content-Type-Options nosniff
+</IfModule>
