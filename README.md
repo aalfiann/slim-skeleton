@@ -5,7 +5,8 @@
 [![License](https://poser.pugx.org/aalfiann/slim-skeleton/license)](https://github.com/aalfiann/slim-skeleton/blob/HEAD/LICENSE.md)
 
 This is a very simple, fast and secure of slim-skeleton.  
-This skeleton is secured with CSRF, fast, simple and modular architecture.
+This skeleton is secured with CSRF, fast, simple and modular architecture.  
+The architecture concept is **SPA** (Single Page Application).
 
 ## Dependencies
 - CSRF Guard >> slim/csrf
