@@ -47,6 +47,7 @@ $container['view'] = function ($container) {
         $container['settings']['app']['template']['options']
     );
     $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
+    $view->addExtension(new modules\core\twig\GlobalTwigVariable($container['settings']['app']['template']['variable']));
     $view->addExtension(new modules\core\twig\CsrfExtension($container['csrf']));
     $view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
     return $view;

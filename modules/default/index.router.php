@@ -14,13 +14,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
                 'email' => 'aalfiann@gmail.com',
                 'github' => 'https://github.com/aalfiann',
                 'linkedin' => 'https://www.linkedin.com/in/azizalfian'
-            ],
-            'engine' => [
-                'name' => $this->settings['app']['name'],
-                'version' => '1.0',
-                'github' => 'https://github.com/aalfiann/slim-skeleton',
-                'license' => 'https://github.com/aalfiann/slim-skeleton/blob/master/LICENSE.md',
-                'documentation' => 'Documentation is available on <a href="slimframework.com">slimframework.com</a> .'
             ]
         ]);
     })->setName("/");
