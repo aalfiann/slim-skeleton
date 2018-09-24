@@ -91,28 +91,23 @@ $container['errorHandler'] = function ($container) {
         if($container['settings']['displayErrorDetails']){
             $data = [
                 'status' => 'error',
-                'code' => $exception->getCode(),
+                'code' => '500',
+                'error_code' => $exception->getCode(),
                 'message' => trim($exception->getMessage()),
                 'file' => $exception->getFile(),
                 'line' => $exception->getLine(),
                 'trace' => explode("\n", $exception->getTraceAsString())
             ];
-            return $response
-                ->withStatus(500)
-                ->withHeader('Content-type', 'application/json;charset=utf-8')
-                ->withHeader('Access-Control-Allow-Origin', '*')
-                ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-                ->write(json_encode($data, JSON_PRETTY_PRINT));
         } else {
             $data = [
                 'status' => 'error',
                 'code' => '500',
                 'message' => 'Something went wrong!',
             ];
-            return \modules\core\view\Renderer::view($container,'../modules/core/view/handler',
-                $container['settings']['app']['template']['options'])
-                    ->render($response->withStatus(500), "500.twig",$data);
         }
+        return \modules\core\view\Renderer::view($container,'../modules/core/view/handler',
+            $container['settings']['app']['template']['options'])
+                ->render($response->withStatus(500), "500.twig",$data);
     };
 };
 

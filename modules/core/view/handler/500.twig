@@ -6,7 +6,27 @@
 {% block content %}
     <center><h1>{{ code }}</h1></center>
     <p><strong>{{ message }}</strong></p>
+{% endblock %}
+{% block pre_content %}
+    {%if not file is empty and not line is empty and not trace is empty %}
+    <p>Error Code: <strong>{{error_code}}</strong><br>
+    File: <strong>{{file}}</strong><br>
+    Line: <strong>{{line}}</strong></p>
+    <p style="overflow-y: auto; max-height:350px !important;">
+    <code>
+        {% for entry in trace %} 
+            {{ entry }} {%if not loop.last %}<br><br>{% endif %}
+        {% endfor %}
+    </code>
+    </p>
+    {% endif %}
+{% endblock %}
+{% block footer %}
     <hr>
-    <p>Please check the data log for more detail.</p>
+    {%if not file is empty and not line is empty and not trace is empty %}
+    <p>This error logs is saved automatically to your data log.</p>
+    {% else %}
+    <p>Please check your data log for more detail.</p>
+    {% endif %}
     <p><a href="{{ path_for('/') }}">Back to home</a></p>
 {% endblock %}
