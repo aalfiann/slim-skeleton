@@ -1,6 +1,6 @@
 # Slim-Skeleton
 
-[![Version](https://img.shields.io/badge/stable-1.1.0-green.svg)](https://github.com/aalfiann/slim-skeleton)
+[![Version](https://img.shields.io/badge/stable-1.1.1-green.svg)](https://github.com/aalfiann/slim-skeleton)
 [![Total Downloads](https://poser.pugx.org/aalfiann/slim-skeleton/downloads)](https://packagist.org/packages/aalfiann/slim-skeleton)
 [![License](https://poser.pugx.org/aalfiann/slim-skeleton/license)](https://github.com/aalfiann/slim-skeleton/blob/HEAD/LICENSE.md)
 
