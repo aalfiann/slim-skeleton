@@ -27,7 +27,8 @@ $config['determineRouteBeforeAppMiddleware']    = false;
  * @var $config['app']['timezone'] is your default php timezone.
  * @var $config['app']['log']['level'] is the level of logger.
  * @var $config['app']['http']['max-age'] is the lifetime of http cache.
- * @var $config['app']['template']['folder'] is the folder name of your current template.
+ * @var $config['app']['template']['handler'] is the place of error handler template.
+ * @var $config['app']['template']['folder'] is the place of your current template.
  * @var $config['app']['template']['options'] is the options of twig template.
  * @var $config['app']['template']['variable'] is the data array to be used in template as global variable.
  */
@@ -36,7 +37,8 @@ $config['app']['language']              = 'en';
 $config['app']['timezone']              = 'Asia/Jakarta';
 $config['app']['log']['level']          = \Monolog\Logger::DEBUG;
 $config['app']['http']['max-age']       = 604800;
-$config['app']['template']['folder']    = 'default';
+$config['app']['template']['handler']   = 'modules/core/view/handler';
+$config['app']['template']['folder']    = 'templates/default';
 $config['app']['template']['options']   = [];
 $config['app']['template']['variable']  = [
     'global' => [

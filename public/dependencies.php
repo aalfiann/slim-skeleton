@@ -43,7 +43,7 @@ $container['logger'] = function($container) {
 
 // Register component view to render page using twig
 $container['view'] = function ($container) {
-    $view = new \Slim\Views\Twig('../templates/'.$container['settings']['app']['template']['folder'],
+    $view = new \Slim\Views\Twig('../'.$container['settings']['app']['template']['folder'],
         $container['settings']['app']['template']['options']
     );
     $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
@@ -61,7 +61,7 @@ $container['notFoundHandler'] = function ($container) {
             'code' => '404',
             'message' => $response->withStatus(404)->getReasonPhrase()
         ];
-        return \modules\core\view\Renderer::view($container,'../modules/core/view/handler',
+        return \modules\core\view\Renderer::view($container,'../'.$container['settings']['app']['template']['handler'],
             $container['settings']['app']['template']['options'])
                 ->render($response->withStatus(404), "404.twig",$data);
     };
