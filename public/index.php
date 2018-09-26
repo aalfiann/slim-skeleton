@@ -7,6 +7,25 @@ if (PHP_SAPI == 'cli-server') {
     if (is_file($file)) return false;
 }
 
+// Set up template handler
+if (!function_exists('get_template_handler')) {
+    function get_template_handler($path,$filename){
+        if(is_file($path.'/'.$filename)) return $path;
+        return 'modules/core/view/handler';
+    }
+}
+
+// Set up scanner files
+if (!function_exists('glob_recursive')) {
+    function glob_recursive($pattern, $flags = 0){
+        $files = glob($pattern, $flags);
+        foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir){
+            $files = array_merge($files, glob_recursive($dir.'/'.basename($pattern), $flags));
+        }
+        return $files;
+    }
+}
+
 // Load vendor
 require '../vendor/autoload.php';
 // Load config
@@ -26,17 +45,6 @@ session_start();
 $app = new \Slim\App(["settings" => $config]);
 
 require __DIR__.'/dependencies.php';
-
-// Set up scanner files
-if (!function_exists('glob_recursive')) {
-    function glob_recursive($pattern, $flags = 0){
-        $files = glob($pattern, $flags);
-        foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir){
-            $files = array_merge($files, glob_recursive($dir.'/'.basename($pattern), $flags));
-        }
-        return $files;
-    }
-}
 
 // Load all modules router files before run
 $modrouters = glob_recursive('../modules/*.router.php',GLOB_NOSORT);

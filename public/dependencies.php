@@ -61,7 +61,7 @@ $container['notFoundHandler'] = function ($container) {
             'code' => '404',
             'message' => $response->withStatus(404)->getReasonPhrase()
         ];
-        return \modules\core\view\Renderer::view($container,'../'.$container['settings']['app']['template']['handler'],
+        return \modules\core\view\Renderer::view($container,get_template_handler('../'.$container['settings']['app']['template']['handler'],'404.twig'),
             $container['settings']['app']['template']['options'])
                 ->render($response->withStatus(404), "404.twig",$data);
     };
@@ -75,7 +75,7 @@ $container['notAllowedHandler'] = function ($container) {
             'code' => '405',
             'message' => $response->withStatus(405)->getReasonPhrase().', method must be one of: ' . implode(', ', $methods)
         ];
-        return \modules\core\view\Renderer::view($container,'../modules/core/view/handler',
+        return \modules\core\view\Renderer::view($container,get_template_handler('../'.$container['settings']['app']['template']['handler'],'405.twig'),
             $container['settings']['app']['template']['options'])
                 ->render($response->withStatus(405)->withHeader('Allow', implode(', ', $methods)), "405.twig",$data);
     };
@@ -105,7 +105,7 @@ $container['errorHandler'] = function ($container) {
                 'message' => 'Something went wrong!',
             ];
         }
-        return \modules\core\view\Renderer::view($container,'../modules/core/view/handler',
+        return \modules\core\view\Renderer::view($container,get_template_handler('../'.$container['settings']['app']['template']['handler'],'500.twig'),
             $container['settings']['app']['template']['options'])
                 ->render($response->withStatus(500), "500.twig",$data);
     };
