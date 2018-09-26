@@ -27,9 +27,9 @@ if (!function_exists('glob_recursive')) {
 }
 
 // Load vendor
-require '../vendor/autoload.php';
+require dirname(__DIR__).'/vendor/autoload.php';
 // Load config
-require '../config.php';
+require dirname(__DIR__).'/config.php';
 
 // Load classes
 spl_autoload_register(function ($classname) {
@@ -44,10 +44,10 @@ session_start();
 // Initialize Slim App
 $app = new \Slim\App(["settings" => $config]);
 
-require __DIR__.'/dependencies.php';
+require dirname(__DIR__).'/modules/core/dependencies.php';
 
 // Load all modules router files before run
-$modrouters = glob_recursive('../modules/*.router.php',GLOB_NOSORT);
+$modrouters = glob_recursive(dirname(__DIR__).'/modules/*.router.php',GLOB_NOSORT);
 foreach ($modrouters as $modrouter) {
     require $modrouter;
 }
