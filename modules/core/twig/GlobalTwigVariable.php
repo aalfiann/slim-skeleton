@@ -18,4 +18,9 @@ class GlobalTwigVariable extends \Twig_Extension implements \Twig_Extension_Glob
         if (!empty($this->globalvariable)) return $this->globalvariable;
         return [];
     }
+
+    public function getName()
+    {
+        return 'Global Twig Variable Extension';
+    }
 }
