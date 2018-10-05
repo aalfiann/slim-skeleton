@@ -1,2 +1,12 @@
-# Disable directory listing on all directories 
+# Disable view directory listing on all directories 
 Options -Indexes
+
+<IfModule mod_php5.c>
+    php_value max_execution_time 300
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^$ public/ [L]
+    RewriteRule (.*) public/$1 [L]
+</IfModule>

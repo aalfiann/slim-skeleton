@@ -3,7 +3,51 @@
 // Create container
 $container = $app->getContainer();
 $settings = $container->get('settings');
+
+// Add middleware http-cache for all routes
 $app->add(new \Slim\HttpCache\Cache('public',$settings['app']['http']['max-age']));
+
+/**
+ * Activating routes in a subfolder
+ * Note:
+ * - This $container['environment'] doesn't work for NGINX, 
+ *      so you still have to set path >> root /var/www/yourdomain.com/public;
+ * - Better to comment or delete this $container['environment'] to prevent useless memory PHP-FPM in NGINX
+ */
+$container['environment'] = function () {
+    $scriptName = $_SERVER['SCRIPT_NAME'];
+    $_SERVER['SCRIPT_NAME'] = dirname(dirname($scriptName)) . '/' . basename($scriptName);
+    return new Slim\Http\Environment($_SERVER);
+};
+
+// Register site url
+$container['site_url'] = function ($container) {
+    if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || 
+        isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+        return 'https://'.$_SERVER['HTTP_HOST'];
+    }
+    return 'http://'.$_SERVER['HTTP_HOST'];
+};
+
+// Register site url canonical
+$container['site_url_canonical'] = function ($container) {
+    return $container['site_url'].$_SERVER['REQUEST_URI'];
+};
+
+// Register visitor ip
+$container['visitor_ip'] = function(){
+    $client  = @$_SERVER['HTTP_CLIENT_IP'];
+    $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+	$remote  = $_SERVER['REMOTE_ADDR'];
+	if(filter_var($client, FILTER_VALIDATE_IP)) {
+        $ip = $client;
+	} elseif(filter_var($forward, FILTER_VALIDATE_IP)) {
+	    $ip = $forward;
+	} else {
+        $ip = $remote;
+	}
+	return $ip;
+};
 
 // Register CSRF Guard 
 $container['csrf'] = function ($container) {
@@ -50,6 +94,7 @@ $container['view'] = function ($container) {
     $view->addExtension(new modules\core\twig\GlobalTwigVariable($container['settings']['app']['template']['variable']));
     $view->addExtension(new modules\core\twig\CsrfExtension($container['csrf']));
     $view->addExtension(new modules\core\twig\SlugifyExtension);
+    $view->addExtension(new modules\core\twig\PHPFunctionExtension);
     $view->addExtension(new Slim\Views\TwigExtension($container['router'], $basePath));
     return $view;
 };
