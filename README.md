@@ -1,6 +1,6 @@
 # Slim-Skeleton
 
-[![Version](https://img.shields.io/badge/stable-1.5.1-green.svg)](https://github.com/aalfiann/slim-skeleton)
+[![Version](https://img.shields.io/badge/stable-1.5.2-green.svg)](https://github.com/aalfiann/slim-skeleton)
 [![Total Downloads](https://poser.pugx.org/aalfiann/slim-skeleton/downloads)](https://packagist.org/packages/aalfiann/slim-skeleton)
 [![License](https://poser.pugx.org/aalfiann/slim-skeleton/license)](https://github.com/aalfiann/slim-skeleton/blob/HEAD/LICENSE.md)
 
@@ -34,10 +34,12 @@ composer create-project aalfiann/slim-skeleton [my-app-name]
 CSRF is already integrated in this skeleton :  
 1. Create same two routes, GET and POST  
 ```
+use \Psr\Http\Message\ServerRequestInterface as Request;
+use \Psr\Http\Message\ResponseInterface as Response;
+
 // load contact page
 $app->get('/contact', function (Request $request, Response $response) {
     $body = $response->getBody();
-    $response = $this->cache->withEtag($response, EtagHelper::updateByMinute());
     return $this->view->render($response, "contact.twig", []);
 })->setName("/contact")->add($container->get('csrf'));
 
