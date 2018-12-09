@@ -30,6 +30,30 @@ composer create-project aalfiann/slim-skeleton [my-app-name]
 - Put the view template to `templates/default` directory
 - Done
 
+### How to activate CSRF
+CSRF is already integrated in this skeleton :  
+1. Create same two routes, GET and POST  
+```
+// load contact page
+$app->get('/contact', function (Request $request, Response $response) {
+    $body = $response->getBody();
+    $response = $this->cache->withEtag($response, EtagHelper::updateByMinute());
+    return $this->view->render($response, "contact.twig", []);
+})->setName("/contact")->add($container->get('csrf'));
+
+// send message
+$app->post('/contact', function (Request $request, Response $response) {
+    $body = $response->getBody();
+    return $this->view->render($response, "contact.twig", []);
+})->add($container->get('csrf'));
+```  
+2. Put hidden input value in contact form HTML  
+```
+<input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
+<input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
+```  
+3. Done
+
 **Note:**  
 - Documentation about `Slim` is available on [slimframework.com](http://slimframework.com).
 - This is a forked version from the original [slimphp/Slim-Skeleton](https://github.com/slimphp/Slim-Skeleton).
