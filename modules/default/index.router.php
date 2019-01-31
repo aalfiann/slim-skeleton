@@ -18,3 +18,23 @@ use \modules\core\helper\EtagHelper;
             ]
         ]);
     })->setName("/");
+
+    // Show detail info about routes
+    $app->map(['GET','POST'],'/route/info',function(Request $request, Response $response) use($container) {
+        $body = $request->getBody();
+        $routes = $container->get('router')->getRoutes();
+        foreach($routes as $route){
+            $data[] = [
+                'identifier' => $route->getIdentifier(),
+                'name' => $route->getName(),
+                'pattern' => $route->getPattern(),
+                'methods' => $route->getMethods(),
+                'middleware' => count($route->getMiddleware())
+            ];
+        }
+        $body->write(json_encode($data,JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT));
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withBody($body);
+    });

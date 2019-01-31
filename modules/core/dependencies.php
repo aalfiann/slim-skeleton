@@ -16,7 +16,7 @@ $app->add(new \Slim\HttpCache\Cache('public',$settings['app']['http']['max-age']
  */
 $container['environment'] = function () {
     $scriptName = $_SERVER['SCRIPT_NAME'];
-    $_SERVER['SCRIPT_NAME'] = dirname(dirname($scriptName)) . '/' . basename($scriptName);
+    $_SERVER['SCRIPT_NAME'] = dirname(dirname($scriptName)).DIRECTORY_SEPARATOR.basename($scriptName);
     return new Slim\Http\Environment($_SERVER);
 };
 
@@ -60,7 +60,7 @@ $container['csrf'] = function ($container) {
                 'code' => '400',
                 'message' => $response->withStatus(400)->getReasonPhrase()
             ];
-            return \modules\core\view\Renderer::view($this,'../modules/core/view/handler',
+            return \modules\core\view\Renderer::view($this,dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'handler',
                 $container['settings']['app']['template']['options'])
                     ->render($response->withStatus(400), "400.twig",$data);
         } else {
@@ -78,7 +78,7 @@ $container['cache'] = function () {
 // Register component Monolog
 $container['logger'] = function($container) {
     $logger = new \Monolog\Logger($container['settings']['app']['name']);
-    $file_handler = new \Monolog\Handler\StreamHandler("../logs/app.log",$container['settings']['app']['log']['level']);
+    $file_handler = new \Monolog\Handler\StreamHandler(dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR."logs".DIRECTORY_SEPARATOR."app.log",$container['settings']['app']['log']['level']);
     $formatter = new \Monolog\Formatter\LineFormatter(null, null, false, true);
     $file_handler->setFormatter($formatter);
     $logger->pushHandler($file_handler);
@@ -87,7 +87,7 @@ $container['logger'] = function($container) {
 
 // Register component view to render page using twig
 $container['view'] = function ($container) {
-    $view = new \Slim\Views\Twig('../'.$container['settings']['app']['template']['folder'],
+    $view = new \Slim\Views\Twig(dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR.$container['settings']['app']['template']['folder'],
         $container['settings']['app']['template']['options']
     );
     $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
@@ -99,6 +99,11 @@ $container['view'] = function ($container) {
     return $view;
 };
 
+// Register component Flash Messages
+$container['flash'] = function () {
+    return new \Slim\Flash\Messages();
+};
+
 // Override the default Not Found Handler
 $container['notFoundHandler'] = function ($container) {
     return function ($request, $response) use ($container) {
@@ -107,7 +112,7 @@ $container['notFoundHandler'] = function ($container) {
             'code' => '404',
             'message' => $response->withStatus(404)->getReasonPhrase()
         ];
-        return \modules\core\view\Renderer::view($container,get_template_handler('../'.$container['settings']['app']['template']['handler'],'404.twig'),
+        return \modules\core\view\Renderer::view($container,get_template_handler(dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR.$container['settings']['app']['template']['handler'],'404.twig'),
             $container['settings']['app']['template']['options'])
                 ->render($response->withStatus(404), "404.twig",$data);
     };
@@ -121,7 +126,7 @@ $container['notAllowedHandler'] = function ($container) {
             'code' => '405',
             'message' => $response->withStatus(405)->getReasonPhrase().', method must be one of: ' . implode(', ', $methods)
         ];
-        return \modules\core\view\Renderer::view($container,get_template_handler('../'.$container['settings']['app']['template']['handler'],'405.twig'),
+        return \modules\core\view\Renderer::view($container,get_template_handler(dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR.$container['settings']['app']['template']['handler'],'405.twig'),
             $container['settings']['app']['template']['options'])
                 ->render($response->withStatus(405)->withHeader('Allow', implode(', ', $methods)), "405.twig",$data);
     };
@@ -151,7 +156,7 @@ $container['errorHandler'] = function ($container) {
                 'message' => 'Something went wrong!',
             ];
         }
-        return \modules\core\view\Renderer::view($container,get_template_handler('../'.$container['settings']['app']['template']['handler'],'500.twig'),
+        return \modules\core\view\Renderer::view($container,get_template_handler(dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR.$container['settings']['app']['template']['handler'],'500.twig'),
             $container['settings']['app']['template']['options'])
                 ->render($response->withStatus(500), "500.twig",$data);
     };

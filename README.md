@@ -1,17 +1,17 @@
 # Slim-Skeleton
 
-[![Version](https://img.shields.io/badge/stable-1.5.2-green.svg)](https://github.com/aalfiann/slim-skeleton)
+[![Version](https://img.shields.io/badge/stable-1.6.0-green.svg)](https://github.com/aalfiann/slim-skeleton)
 [![Total Downloads](https://poser.pugx.org/aalfiann/slim-skeleton/downloads)](https://packagist.org/packages/aalfiann/slim-skeleton)
 [![License](https://poser.pugx.org/aalfiann/slim-skeleton/license)](https://github.com/aalfiann/slim-skeleton/blob/HEAD/LICENSE.md)
 
 This is a very simple, fast and secure of slim-skeleton.  
 This skeleton is secured with CSRF, fast, simple and modular architecture.  
-The architecture concept is **SPA** (Single Page Application).
 
 ## Dependencies
 - CSRF Guard >> slim/csrf
 - TWIG Template >> slim/twig-view
 - HTTP Cache >> slim/http-cache
+- Flash Messages >> slim/flash
 - Logger >> monolog/monolog
 
 ## Installation
@@ -59,3 +59,4 @@ $app->post('/contact', function (Request $request, Response $response) {
 **Note:**  
 - Documentation about `Slim` is available on [slimframework.com](http://slimframework.com).
 - This is a forked version from the original [slimphp/Slim-Skeleton](https://github.com/slimphp/Slim-Skeleton).
+- There is [swift](https://github.com/aalfiann/swift) project based from this skeleton which is already integrated with Flat-File, User Session, Authorization, Validation, etc.

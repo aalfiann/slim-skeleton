@@ -10,30 +10,19 @@ if (PHP_SAPI == 'cli-server') {
 // Set up template handler
 if (!function_exists('get_template_handler')) {
     function get_template_handler($path,$filename){
-        if(is_file($path.'/'.$filename)) return $path;
-        return 'modules/core/view/handler';
-    }
-}
-
-// Set up scanner files
-if (!function_exists('glob_recursive')) {
-    function glob_recursive($pattern, $flags = 0){
-        $files = glob($pattern, $flags);
-        foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir){
-            $files = array_merge($files, glob_recursive($dir.'/'.basename($pattern), $flags));
-        }
-        return $files;
+        if(is_file($path.DIRECTORY_SEPARATOR.$filename)) return $path;
+        return 'modules'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'handler';
     }
 }
 
 // Load vendor
-require dirname(__DIR__).'/vendor/autoload.php';
+require dirname(__DIR__).DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
 // Load config
-require dirname(__DIR__).'/config.php';
+require dirname(__DIR__).DIRECTORY_SEPARATOR.'config.php';
 
 // Load classes
 spl_autoload_register(function ($classname) {
-    require (realpath(__DIR__ . '/..'). '/'.str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php');
+    require (realpath(__DIR__ . '/..').DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php');
 });
 
 // Set time zone
@@ -44,10 +33,10 @@ session_start();
 // Initialize Slim App
 $app = new \Slim\App(["settings" => $config]);
 
-require dirname(__DIR__).'/modules/core/dependencies.php';
+require dirname(__DIR__).DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'dependencies.php';
 
 // Load all modules router files before run
-$modrouters = glob_recursive(dirname(__DIR__).'/modules/*.router.php',GLOB_NOSORT);
+$modrouters = \modules\core\helper\Scanner::fileSearch(dirname(__DIR__).DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR,'router.php');
 foreach ($modrouters as $modrouter) {
     require $modrouter;
 }
@@ -56,5 +45,3 @@ foreach ($modrouters as $modrouter) {
 unset($modrouters);
 
 $app->run();
-
-?>
